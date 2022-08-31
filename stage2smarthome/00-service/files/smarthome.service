@@ -1,0 +1,14 @@
+[Unit]
+Description=Raspberry Smarthome Startup service
+After=network-online.target
+
+[Service]
+ExecStart=/bin/bash /home/pi/smarthome/smarthome.sh
+WorkingDirectory=/home/pi/smarthome
+StandardOutput=inherit
+StandardError=inherit
+#Restart=never
+User=pi
+
+[Install]
+WantedBy=multi-user.target
