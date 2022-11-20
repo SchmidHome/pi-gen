@@ -10,9 +10,10 @@ if [ ! -f "$1" ]; then
     exit 1
 fi
 
-# assert arg2 is hostname
-if [ -z "$2" ]; then
+# assert arg2 is hostname and config folder exists
+if [ ! -d "./configs/$2" ]; then
     echo "ERROR: $2 is not a valid hostname"
+    echo "       ./configs/$2 does not exist"
     exit 1
 fi
 
@@ -31,7 +32,7 @@ if [ "$#" -gt 2 ]; then
 fi
 
 ######################################## variables
-DATE=$(date +%Y-%m-%d)
+# DATE=$(date +%Y-%m-%d)
 
 IN_ZIP="$1"
 IN_BASE="$(basename $IN_ZIP)"
@@ -40,8 +41,9 @@ IN_IMG=${IN_TEMP/.zip/.img}
 IN_NAME=${IN_TEMP/.zip/}
 
 OUT_NAME="$2"
-OUT_ZIP="$DATE-$OUT_NAME-$IN_NAME.zip"
-OUT_IMG="$DATE-$OUT_NAME-$IN_NAME.img"
+OUT_ZIP="$OUT_NAME-$IN_NAME.zip"
+OUT_IMG="$OUT_NAME-$IN_NAME.img"
+
 
 ######################################## programs
 # check zip is installed
@@ -113,14 +115,15 @@ sudo sed -i '/^#\?HostKey \/etc\/ssh\/ssh_host_rsa_key/s/.*$/HostKey \/home\/pi\
 
 sudo cp ./files/.ssh/id_rsa     /mnt/rasp-img/home/pi/.ssh/
 sudo cp ./files/.ssh/id_rsa.pub /mnt/rasp-img/home/pi/.ssh/
+sudo cp ./files/.ssh/authorized_keys /mnt/rasp-img/home/pi/.ssh/
 sudo chmod 600 /mnt/rasp-img/home/pi/.ssh/id_rsa
-sudo chmod 600 /mnt/rasp-img/home/pi/.ssh/id_rsa.pub
-
-#TODO add other ssh keys
+sudo chmod 644 /mnt/rasp-img/home/pi/.ssh/id_rsa.pub
+sudo chmod 644 /mnt/rasp-img/home/pi/.ssh/authorized_keys
+sudo chown -R pi:pi /mnt/rasp-img/home/pi/.ssh
 
 #################### add bash_aliases
 cp ./files/bash_aliases /mnt/rasp-img/home/pi/.bash_aliases
-if [ -f "/mnt/rasp-img/home/pi/.bashrc" ]; then
+# if [ -f "/mnt/rasp-img/home/pi/.bashrc" ]; then
 
 
 #################### add startup service

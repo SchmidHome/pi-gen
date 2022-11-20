@@ -37,23 +37,30 @@ fi
 
 ######################################## home assistant
 # check if docker homeassistant is running
-if ! docker ps | grep homeassistant &>/dev/null; then
-    echo "[Home Assistant] is not running, starting..."
-    trap "echo '[Home Assistant] failed to start'; exit 1" ERR
+# if ! docker ps | grep homeassistant &>/dev/null; then
+#     echo "[Home Assistant] is not running, starting..."
+#     trap "echo '[Home Assistant] failed to start'; exit 1" ERR
 
-    #todo load config and backup
-    mkdir -p /home/pi/homeassistant
+#     #todo load config and backup
+#     mkdir -p /home/pi/homeassistant
 
-    # https://www.home-assistant.io/installation/raspberrypi
-    docker run -d \
-        --name homeassistant \
-        --privileged \
-        --restart=unless-stopped \
-        -e TZ=Europe/Berlin \
-        -v /home/pi/homeassistant:/config \
-        --network=host \
-        ghcr.io/home-assistant/home-assistant:stable
-    echo "[Home Assistant] is running"
-else
-    echo "[Home Assistant] is already running"
-fi
+#     # https://www.home-assistant.io/installation/raspberrypi
+#     docker run -d \
+#         --name homeassistant \
+#         --privileged \
+#         --restart=unless-stopped \
+#         -e TZ=Europe/Berlin \
+#         -v /home/pi/homeassistant:/config \
+#         --network=host \
+#         ghcr.io/home-assistant/home-assistant:stable
+
+#     echo "[Home Assistant] installing HACS..."
+#     trap "echo '[Home Assistant] failed to install HACS'; exit 1" ERR
+#     sleep 5
+#     docker exec -it homeassistant bash -c "wget -q -O - https://install.hacs.xyz | bash -"
+#     docker restart homeassistant
+
+#     echo "[Home Assistant] is running"
+# else
+#     echo "[Home Assistant] is already running"
+# fi
