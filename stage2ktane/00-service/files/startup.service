@@ -1,0 +1,14 @@
+[Unit]
+Description=Raspberry KTANE Startup service
+After=network-online.target
+
+[Service]
+ExecStart=/bin/bash /home/pi/startup.sh
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+#Restart=never
+User=pi
+
+[Install]
+WantedBy=multi-user.target
