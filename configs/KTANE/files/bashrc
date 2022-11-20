@@ -1,3 +1,0 @@
-s-tail() {
-    journalctl -u smarthome -f
-}

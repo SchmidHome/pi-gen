@@ -40,6 +40,8 @@ IN_TEMP="${IN_BASE:6}"
 IN_IMG=${IN_TEMP/.zip/.img}
 IN_NAME=${IN_TEMP/.zip/}
 
+CFG="./configs/$2"
+
 OUT_NAME="$2"
 OUT_ZIP="$OUT_NAME-$IN_NAME.zip"
 OUT_IMG="$OUT_NAME-$IN_NAME.img"
@@ -113,23 +115,12 @@ sudo sed -i 's/XKBLAYOUT=".*"/XKBLAYOUT="de"/g' /mnt/rasp-img/etc/default/keyboa
 sudo sed -i '/^#\?UsePAM /s/.*$/UsePAM no/' /mnt/rasp-img/etc/ssh/sshd_config
 sudo sed -i '/^#\?HostKey \/etc\/ssh\/ssh_host_rsa_key/s/.*$/HostKey \/home\/pi\/.ssh\/id_rsa/' /mnt/rasp-img/etc/ssh/sshd_config
 
-sudo cp ./files/.ssh/id_rsa     /mnt/rasp-img/home/pi/.ssh/
-sudo cp ./files/.ssh/id_rsa.pub /mnt/rasp-img/home/pi/.ssh/
-sudo cp ./files/.ssh/authorized_keys /mnt/rasp-img/home/pi/.ssh/
+sudo cp -r $CFG/files/ /mnt/rasp-img/home/pi
+
 sudo chmod 600 /mnt/rasp-img/home/pi/.ssh/id_rsa
 sudo chmod 644 /mnt/rasp-img/home/pi/.ssh/id_rsa.pub
 sudo chmod 644 /mnt/rasp-img/home/pi/.ssh/authorized_keys
 sudo chown -R pi:pi /mnt/rasp-img/home/pi/.ssh
-
-#################### add bash_aliases
-cp ./files/bash_aliases /mnt/rasp-img/home/pi/.bash_aliases
-# if [ -f "/mnt/rasp-img/home/pi/.bashrc" ]; then
-
-
-#################### add startup service
-mkdir -p /mnt/rasp-img/home/pi/smarthome
-cp files/smarthome.sh /mnt/rasp-img/home/pi/smarthome/
-####################
 
 # unmount
 echo "       unmounting volume"

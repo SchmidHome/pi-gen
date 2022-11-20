@@ -8,4 +8,4 @@ SKIP_IMAGES
 *-pc
 apt-cacher-ng/
 
-files/.ssh
+configs
