@@ -115,12 +115,19 @@ sudo sed -i 's/XKBLAYOUT=".*"/XKBLAYOUT="de"/g' /mnt/rasp-img/etc/default/keyboa
 sudo sed -i '/^#\?UsePAM /s/.*$/UsePAM no/' /mnt/rasp-img/etc/ssh/sshd_config
 sudo sed -i '/^#\?HostKey \/etc\/ssh\/ssh_host_rsa_key/s/.*$/HostKey \/home\/pi\/.ssh\/id_rsa/' /mnt/rasp-img/etc/ssh/sshd_config
 
-sudo cp -r $CFG/files/ /mnt/rasp-img/home/pi
+echo "       copying files"
+sudo cp -a $CFG/files/** /mnt/rasp-img/home/pi
+sudo cp -a $CFG/files/.ssh/** /mnt/rasp-img/home/pi/.ssh
+
+echo "       applying permissions"
+sudo chmod 644 /mnt/rasp-img/home/pi/bash_aliases
+sudo chmod 644 /mnt/rasp-img/home/pi/bashrc
+sudo chmod 755 /mnt/rasp-img/home/pi/startup.sh
 
 sudo chmod 600 /mnt/rasp-img/home/pi/.ssh/id_rsa
 sudo chmod 644 /mnt/rasp-img/home/pi/.ssh/id_rsa.pub
 sudo chmod 644 /mnt/rasp-img/home/pi/.ssh/authorized_keys
-sudo chown -R pi:pi /mnt/rasp-img/home/pi/.ssh
+# sudo chown -R pi:pi /mnt/rasp-img/home/pi
 
 # unmount
 echo "       unmounting volume"
